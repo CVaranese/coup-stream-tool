@@ -1,0 +1,52 @@
+{
+    "skinList": [
+        "Mewtwo (1)",
+        "Mewtwo (2)",
+        "Mewtwo (3)",
+        "Mewtwo (4)",
+        "Mewtwo (5)",
+        "Mewtwo (6)",
+        "Mewtwo (7)",
+        "Mewtwo (8)",
+        "Mewtwo (9)",
+        "Mewtwo (10)",
+        "Mewtwo (11)",
+        "Mewtwo (12)",
+        "Mewtwo (13)",
+        "Mewtwo (14)",
+        "Mewtwo (15)"
+    ],
+<<<<<<< HEAD
+    "scoreboard": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "vsScreen": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "gui": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+=======
+    "Left": {
+        "x": -75,
+        "y": 160,
+        "scale": 1.4
+    },
+    "Right": {
+        "x": 650,
+        "y": 0,
+        "scale": 1.3
+>>>>>>> 8bba100... Project m Character Files
+    }
+}

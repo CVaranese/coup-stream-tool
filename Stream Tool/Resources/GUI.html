@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Stream Tool v7.1</title>
+    <link rel="stylesheet" href="CSS/GUI.css">
+    <script src="Scripts/mousetrap.min.js" defer></script>
+    <script src="Scripts/GUI.js" defer></script>
+  </head>
+  
+  <body>
+
+    <div id="viewport"> <!-- so we can move the viewport easily -->
+
+      <div id="overlay">
+
+        <div id="playerRegion">
+
+          <div id="lSide" class="side">
+
+            <div class="charImgBox">
+              <img id="p1CharImg" class="charImg"/>
+              <img id="p3CharImg" class="charImg"/>
+            </div>
+
+            <div class="sideEditor">
+
+              <div class="row" id="row1-1">
+
+                <input type="text" id="teamName1" class="teamName textInput elGm2 mousetrap" tabindex="1" placeholder="Team 1 name" spellcheck="false" contenteditable="true">
+
+                <div class="playerInfo" id="pInfo1">
+
+                  <input type="text" id="p1Tag" class="textInput mousetrap tagInput" tabindex="2" placeholder="Tag" title="Insert the tag/team/sponsor here" spellcheck="false" contenteditable="true">
+                  <div class="pFinderPosition" id="pFinderBox1">
+                    <input type="text" id="p1Name" class="textInput mousetrap nameInput" tabindex="2" placeholder="Player 1" title="Insert P1's name here" spellcheck="false">
+                  </div>
+
+                </div>
+                
+                <div id="lColor" class="pColor" tabindex="-1" title="Change the color slot for this player">
+                  <div class="colorContainer">
+                    <div id="lColorRect" class="pColorRect"></div>
+                  </div>
+                  <div class="dropdownColor" id="dropdownColorL"></div>
+                </div>
+
+              </div>
+
+              <div class="row" id="row2-1">
+
+                 <div class="scoreBox" id="scoreBox1" title="Press F1 to increase the score">
+
+                  <span id="scoreText1">Wins</span>
+                  <input type="checkbox" id="winP1-1" class="scoreCheck mousetrap" tabindex="-1">
+                  <input type="checkbox" id="winP1-2" class="scoreCheck mousetrap" tabindex="-1">
+                  <input type="checkbox" id="winP1-3" class="scoreCheck mousetrap" tabindex="-1">
+                </div>
+                
+                <div class="wlButtons" id="wlButtons1">
+                  <div id="p1W" class="wlBox">[W]</div>
+                  <div id="p1L" class="wlBox">[L]</div>
+                </div>
+
+              </div>
+
+              <div class="row" id="row3-1">
+
+                <div class="charSelector" id="p3CharSelectorDiv">
+                  <img class="charSelectorImg" id="p3CharSelector" tabindex="50"/>
+                </div>
+                <div class="skinSelector" id="skinSelectorP3">
+                  <div id="skinListP3"></div>
+                </div>
+
+                <div class="charSelector" id="p1CharSelectorDiv">
+                  <img class="charSelectorImg" id="p1CharSelector" tabindex="50"/>
+                </div>
+
+                <div class="skinSelector" id="skinSelectorP1">
+                  <div id="skinListP1"></div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          
+          <div id="sideSep">
+            <div id="swapButton" title="Swap P1's and P2's values">
+              <load-svg src="SVGs/Swap.svg" class="midIcon" id="swapIcon"></load-svg>
+            </div>
+            <div id="clearButton" title="Clear player names, characters and scores [Shortcut: Esc]">
+              <load-svg src="SVGs/Trash.svg" class="midIcon" id="clearIcon"></load-svg>
+            </div>
+          </div>
+  
+          <div id="rSide" class="side">
+
+            <div class="charImgBox">
+              <img id="p2CharImg" class="charImg"/>
+              <img id="p4CharImg" class="charImg"/>
+            </div>
+
+            
+            <div class="sideEditor">
+
+              <div class="row" id="row1-2">
+
+                <input type="text" id="teamName2" class="teamName textInput elGm2 mousetrap" tabindex="1" placeholder="Team 2 name" spellcheck="false" contenteditable="true">
+
+                <div class="playerInfo" id="pInfo2">
+                  <input type="text" id="p2Tag" class="textInput mousetrap tagInput" tabindex="2" placeholder="Tag" title="Insert the tag/team/sponsor here." spellcheck="false">
+                  <div class="pFinderPosition" id="pFinderBox2">
+                    <input type="text" id="p2Name" class="textInput mousetrap nameInput" tabindex="2" placeholder="Player 2" title="Insert P2's name here." spellcheck="false">
+                  </div>
+                </div>
+                
+
+                <div id="rColor" class="pColor" tabindex="-1">
+                  <div class="colorContainer" title="Change the color slot for this player">
+                    <div id="rColorRect" class="pColorRect"></div>
+                  </div>
+                  <div class="dropdownColor" id="dropdownColorR"></div>
+                </div>
+
+              </div>
+
+              <div class="row" id="row2-2">
+
+                <div class="scoreBox" id="scoreBox2" title="Press F2 to increase the score">
+                  <span id="scoreText2">Wins</span>
+                  <input type="checkbox" id="winP2-1" class="scoreCheck mousetrap" tabindex="-1">
+                  <input type="checkbox" id="winP2-2" class="scoreCheck mousetrap" tabindex="-1">
+                  <input type="checkbox" id="winP2-3" class="scoreCheck mousetrap" tabindex="-1">
+                </div>
+
+                <div class="wlButtons" id="wlButtons2">
+                  <div id="p2W" class="wlBox">[W]</div>
+                  <div id="p2L" class="wlBox">[L]</div>
+                </div>
+                
+
+              </div>
+
+              <div class="row" id="row3-2">
+
+                
+
+                <div class="charSelector" id="p4CharSelectorDiv">
+                  <img class="charSelectorImg" id="p4CharSelector" tabindex="50"/>
+                </div>
+                <div class="skinSelector" id="skinSelectorP4">
+                  <div id="skinListP4"></div>
+                </div>
+
+                <div class="charSelector" id="p2CharSelectorDiv">
+                  <img class="charSelectorImg" id="p2CharSelector" tabindex="50"/>
+                </div>
+
+                <div class="skinSelector" id="skinSelectorP2">
+                  <div id="skinListP2"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="botRegion">
+
+          <div id="roundInfo">
+
+            <div id="bestOf">
+              <div id="bo3Div" class="bestOfBox">Best of 3</div>
+              <div id="bo5Div" class="bestOfBox">Best of 5</div>
+            </div>
+  
+            <input type="text" id="roundName" class="textInput mousetrap" placeholder="Current Round" spellcheck="false" tabindex="4">
+            <input type="text" id="tournamentName" class="textInput mousetrap" placeholder="Tournament Name" spellcheck="false" tabindex="4">
+          
+            <div id="gamemode" title="Change the gamemode to Doubles">2v2</div>
+  
+          </div>
+  
+          <div id=casterInfo>
+  
+            <div id=caster1 class="caster">
+  
+              <div class="casterGroup casterNameG">
+                <load-svg src="SVGs/Mic.svg" class="casterIcon"></load-svg>
+                <input type="text" id="cName1" class="textInput mousetrap" placeholder="Caster 1 name" spellcheck="false">
+              </div>
+              
+              <div class="casterGroup casterSocialG">
+                <load-svg src="SVGs/Twitter.svg" class="casterIcon twitterIcon"></load-svg>
+                <input type="text" id="cTwitter1" class="textInput mousetrap" placeholder="Caster 1 twitter" spellcheck="false">
+              </div>
+              
+              <div class="casterGroup casterSocialG">
+                <load-svg src="SVGs/Twitch.svg" class="casterIcon twitchIcon"></load-svg>
+                <input type="text" id="cTwitch1" class="textInput mousetrap" placeholder="Caster 1 Twitch" spellcheck="false">
+              </div>
+  
+            </div>
+  
+            <div id=caster2 class="caster">
+  
+              <div class="casterGroup casterNameG">
+                <load-svg src="SVGs/Mic.svg" class="casterIcon"></load-svg>
+                <input type="text" id="cName2" class="textInput mousetrap" placeholder="Caster 2 name" spellcheck="false">
+              </div>
+              
+              <div class="casterGroup casterSocialG">
+                <load-svg src="SVGs/Twitter.svg" class="casterIcon twitterIcon"></load-svg>
+                <input type="text" id="cTwitter2" class="textInput mousetrap" placeholder="Caster 2 twitter" spellcheck="false">
+              </div>
+            
+              <div class="casterGroup casterSocialG">
+                <load-svg src="SVGs/Twitch.svg" class="casterIcon twitchIcon"></load-svg>
+                <input type="text" id="cTwitch2" class="textInput mousetrap" placeholder="Caster 2 Twitch" spellcheck="false">
+              </div>
+  
+            </div>
+  
+          </div>
+          
+          <div id="botBar">
+            <div id="updateRegion" class="botRegion" title="Save current info to the json file. [Shortcut: Enter]">
+              <div class="rectangle"></div>
+              <span class="botText">UPDATE</span>
+              <div class="rectangle"></div>
+            </div>
+            <div id="settingsRegion" class="botRegion" title="Settings">
+              <load-svg src="SVGs/Settings.svg" id="configIcon"></load-svg>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div id="settings">
+
+        <div id="actualSettings">
+          <div class="settingBox" title="Plays an intro on 'Scoreboard.html' whenever the file loads.">
+            <input type="checkbox" id="allowIntro" class="settingsCheck" tabindex="-1">
+            <label for="allowIntro" class="settingsText">Allow Intro</span>
+          </div>
+
+          <div class="settingBox" title="Forces HD renders to appear on the VS screen,
+while keeping the regular renders for the scoreboard.">
+            <input type="checkbox" id="forceHD" class="settingsCheck" tabindex="-1">
+            <label for="forceHD" class="settingsText">HD renders in VS Screen</span>
+          </div>
+          
+          <div class="settingBox" title="Forces the [W]/[L] buttons to appear on the interface.
+
+They will always appear when typing 'Grand' in the round box.">
+              <input type="checkbox" id="forceWLToggle" class="settingsCheck" tabindex="-1">
+              <label for="forceWLToggle" class="settingsText">Force [W] / [L]</span>
+            </div>
+  
+            <div class="settingBox" title="Prevents other windows to be displayed on top of this one.">
+              <input type="checkbox" id="alwaysOnTop" class="settingsCheck" tabindex="-1">
+              <label for="alwaysOnTop" class="settingsText">Window always on top</span>
+            </div>
+  
+            <div id="settingsButtonSection">
+              <button id="copyMatch" tabindex="-1" title='"Tournament Name - Round - Player1 (Character1) VS Player2 (Character2)"'>
+                Match info to clipboard
+              </button>
+            </div>
+
+          </div>
+
+        </div>        
+      </div>
+      <div id="charRoster">
+        <div class="rosterLine" id="rosterLine1">
+          
+        </div>
+        <div class="rosterLine" id="rosterLine2">
+
+        </div>
+        <div class="rosterLine" id="rosterLine3">
+
+        </div>
+        <div class="rosterLine" id="rosterLine4">
+
+        </div>
+        <div class="rosterLine" id="rosterLine5">
+
+        </div>
+        <div class="rosterLine" id="rosterLine6">
+
+        </div>
+        <div class="rosterLine" id="rosterLine7">
+
+        </div>
+      </div>
+
+      <div id="goBack"></div>
+
+    </div>
+
+    <!-- stuff that will get moved around -->
+    <div id="playerFinder"></div>
+    <div id="characterFinder" class="finder">
+      <input type="text" class="listSearch mousetrap" placeholder="Type to filter..." spellcheck="false" tabindex="-1">
+      <div class="searchList" id="charSearchList"></div>
+    </div>
+    <div id="skinFinder" class="finder">
+      <input type="text" class="listSearch mousetrap" placeholder="Type to filter..." spellcheck="false" tabindex="-1">
+      <div class="searchList"></div>
+    </div>
+    
+  </body>
+</html>

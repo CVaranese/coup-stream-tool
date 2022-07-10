@@ -1,0 +1,52 @@
+{
+    "skinList": [
+        "Olimar (1)",
+        "Olimar (2)",
+        "Olimar (3)",
+        "Olimar (4)",
+        "Olimar (5)",
+        "Olimar (6)",
+        "Olimar (7)",
+        "Olimar (8)",
+        "Olimar (9)",
+        "Olimar (10)",
+        "Olimar (11)",
+        "Olimar (12)",
+        "Olimar (13)",
+        "Olimar (14)",
+        "Olimar (15)"
+    ],
+<<<<<<< HEAD
+    "scoreboard": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "vsScreen": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "gui": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+=======
+    "Left": {
+        "x": -75,
+        "y": 160,
+        "scale": 1.4
+    },
+    "Right": {
+        "x": 650,
+        "y": 0,
+        "scale": 1.3
+>>>>>>> 8bba100... Project m Character Files
+    }
+}
