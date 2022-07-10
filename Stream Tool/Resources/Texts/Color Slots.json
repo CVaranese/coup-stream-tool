@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Red",
+        "hex": "#E90004"
+    },
+    {
+        "name": "Blue",
+        "hex": "#0A69E7"
+    },
+    {
+        "name": "Yellow",
+        "hex": "#EDAD09"
+    },
+    {
+        "name": "Green",
+        "hex": "#0DB321"
+    },
+    {
+        "name": "CPU",
+        "hex": "#808080"
+    }
+]

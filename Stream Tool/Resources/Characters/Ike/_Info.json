@@ -1,0 +1,52 @@
+{
+    "skinList": [
+        "Ike (1)",
+        "Ike (2)",
+        "Ike (3)",
+        "Ike (4)",
+        "Ike (5)",
+        "Ike (6)",
+        "Ike (7)",
+        "Ike (8)",
+        "Ike (9)",
+        "Ike (10)",
+        "Ike (11)",
+        "Ike (12)",
+        "Ike (13)",
+        "Ike (14)",
+        "Ike (15)"
+    ],
+<<<<<<< HEAD
+    "scoreboard": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "vsScreen": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+    },
+    "gui": {
+        "neutral": {
+            "x": 0,
+            "y": 0,
+            "scale": 1
+        }
+=======
+    "Left": {
+        "x": -75,
+        "y": 160,
+        "scale": 1.4
+    },
+    "Right": {
+        "x": 650,
+        "y": 0,
+        "scale": 1.3
+>>>>>>> 8bba100... Project m Character Files
+    }
+}
