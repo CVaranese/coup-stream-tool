@@ -1,3 +1,5 @@
 *.exe
 *.AppImage
 "Interface Source Code/dist/*"
+*dist*
+*.zip

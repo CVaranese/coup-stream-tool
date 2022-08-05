@@ -1,93 +1,75 @@
 {
   "player": [
     {
-<<<<<<< HEAD
-      "name": "Dox",
-      "tag": "slo",
-      "character": "Wario",
-      "skin": "Wario (13)"
+      "name": "1",
+      "pronouns": "1",
+      "cards": [
+        "CAPTAIN",
+        "DUKE"
+      ],
+      "influences": [
+        false,
+        true
+      ],
+      "coins": "6",
+      "score": "2"
     },
     {
-      "name": "captain sparkles",
-      "tag": "slo",
-      "character": "Zelda",
-      "skin": "Zelda (4)"
-=======
-      "name": "",
-      "tag": "",
-      "character": "Forsburn",
-      "skin": "Default"
+      "name": "3",
+      "pronouns": "3",
+      "cards": [
+        "DUKE",
+        "DUKE"
+      ],
+      "influences": [
+        false,
+        false
+      ],
+      "coins": "6",
+      "score": ""
     },
     {
-      "name": "",
-      "tag": "",
-      "character": "Etalus",
-      "skin": "Default"
+      "name": "2",
+      "pronouns": "2",
+      "cards": [
+        "DUKE",
+        "DUKE"
+      ],
+      "influences": [
+        false,
+        false
+      ],
+      "coins": "5",
+      "score": ""
     },
     {
-      "name": "",
-      "tag": "",
-      "character": "Random",
-      "skin": ""
-    },
-    {
-      "name": "",
-      "tag": "",
-      "character": "Random",
-      "skin": ""
->>>>>>> 8bba100... Project m Character Files
+      "name": "4",
+      "pronouns": "4",
+      "cards": [
+        "DUKE",
+        "ASSASSIN"
+      ],
+      "influences": [
+        false,
+        false
+      ],
+      "coins": "5",
+      "score": "2"
     }
   ],
-  "teamName": [
-    "",
-    ""
-  ],
-  "color": [
-    "Red",
-    "Blue"
-  ],
-  "score": [
-    2,
-    2
-  ],
-  "wl": [
-    "Nada",
-    "Nada"
-  ],
-  "bestOf": "Bo3",
-  "gamemode": 1,
-<<<<<<< HEAD
-  "round": "Winners Round 1",
-  "tournamentName": "Camp",
+  "round": "",
+  "tournamentName": "",
   "caster": [
     {
-      "name": "ddddd",
-      "twitter": "ewrw",
-      "twitch": "23423fc"
-    },
-    {
-      "name": "ffffffffffff",
-      "twitter": "ewrer",
-      "twitch": "342v3c23"
-=======
-  "round": "WR1",
-  "tournamentName": "CMAP",
-  "caster": [
-    {
-      "name": "uuuu",
+      "name": "",
       "twitter": "",
       "twitch": ""
     },
     {
-      "name": "uuuuu",
+      "name": "",
       "twitter": "",
       "twitch": ""
->>>>>>> 8bba100... Project m Character Files
     }
   ],
-  "allowIntro": false,
-  "workshop": false,
-  "forceHD": false,
-  "noLoAHD": false,
-  "forceAlt": false
+  "allowIntro": false
 }

@@ -17,7 +17,7 @@ img {
   --text2: #00ffd9;
   --bg1: #0a2424;
   --bg2: #134849;
-  --bg3: #0e3131; 
+  --bg3: #0e3131;
   --bg4: #1e887ab2;
   --bg5: #113f3f;
   --selected: #2db29f;
@@ -66,9 +66,8 @@ body {
   height: 30px;
   padding: 5px;
   box-sizing: border-box;
-  border-radius: 3px;
   border: 1px solid var(--bg4);
-  transition: border-color 100ms;  
+  transition: border-color 100ms;
 }
 input[type="text"] {
   font-family: 'Roboto-Regular';
@@ -82,7 +81,6 @@ input[type="text"] {
 .textInput:focus {
   border-color: var(--focused);
 }
-
 
 /* main viewport */
 #viewport {
@@ -109,7 +107,7 @@ input[type="text"] {
 #playerRegion {
   display: flex;
   /*height: 100%;*/
-  height: 150px
+  height: 200px
 }
 
 .side {
@@ -118,11 +116,12 @@ input[type="text"] {
 }
 
 .sideEditor {
-  position: absolute;
+  position: relative;
   left: 0px;
   top: 0px;
   width: 100%;
-  height: 100%;
+  height: 15%;
+  margin-top: 5px;
   display: grid;
   align-items: center;
 }
@@ -130,7 +129,7 @@ input[type="text"] {
 .row {
   display: flex;
   align-items: center;
-  transform: scale(.9);
+  width:100%;
 }
 
 
@@ -143,24 +142,36 @@ input[type="text"] {
 
 .tagInput {
   float: left;
-  min-width: 34px;
-  max-width: 70px;
-  width: 34px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
+  width: 80px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  margin-left:5px;
 }
 
 .nameInput {
   float: left;
-  min-width: 60px;
-  max-width: 173px;
-  width: 60px;
-  border-radius: 0px;
+  width: 90px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.score {
+  float:left;
+  width: 85px;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
+.scoreInput {
+  border-radius: 3px;
+  width: 40px;
 }
 
 .pFinderPosition {
   float: left;
   position: relative;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 .playerFinder {
   display: none;
@@ -278,7 +289,7 @@ input[type="text"] {
 
 .colorEntry {
   display: flex;
-  align-items: center;  
+  align-items: center;
 }
 
 .colorEntry:hover {
@@ -403,18 +414,42 @@ input[type="text"] {
 }
 
 .charSelector {
-  
+  position:relative;
+  object-fit: contain;
+  float: right;
+  height: auto;
+  width: 30%;
+  margin: 10px;
+  border: 2px;
 }
 
 .charSelectorImg {
-  width: 50px;
   object-fit: contain;
   outline: none;
-  transform: rotate(45deg) 
+  max-width:100%;
+  max-height:100%;
 }
 
 .charSelectorImg:hover {
   filter: brightness(1.5);
+}
+
+.coinInfo{
+  width: 10%;
+  height: auto;
+  position: relative;
+  float: right;
+  bottom: -80px;
+}
+
+.coinImg{
+  width: 100%;
+  height: 100%;
+}
+
+.coinInput{
+  width: 100%;
+  border-radius: 3;
 }
 
 .skinSelector {
@@ -443,18 +478,12 @@ input[type="text"] {
   transform: scale(1.2);
 }
 .skinIcon:hover {
-  filter: brightness(1.5); 
+  filter: brightness(1.5);
 }
 
 #skinListP1, #skinListP2 {
   margin-top: 1px;
   margin-left: 4px;
-}
-
-
-/* elements that will show up when changing gamemode */
-#p3Char, #p4Char, #p3Skin, #p4Skin, #pInfo3, #pInfo4 {
-  display: none;
 }
 
 
@@ -522,7 +551,7 @@ input[type="text"] {
   z-index: -1;
   box-sizing: border-box;
   float: right;
-  
+
 
 }
 
@@ -574,27 +603,27 @@ input[type="text"] {
 #roundName, #tournamentName {
   width: 100%;
   text-align: center;
-  margin-right: 4px;
+  margin: 8px;
 }
 
-
-#gamemode {
+#fetchButton {
   background-color: var(--bg4);
   height: 30px;
-  width: 140px;
+  width: 250px;
   margin-left: 6px;
   box-sizing: border-box;
   border-radius: 3px;
   border: 1px solid var(--focused);
   transition: border-color 100ms;
   float: left;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 25px;
 }
-#gamemode:hover {
+
+#fetchButton:hover {
   border-color: var(--selected);
   cursor: pointer;
-}
-#gamemode:active {
-  background-color: #2b2b2b;
 }
 
 .gmIcon {
@@ -801,23 +830,24 @@ input[type="text"] {
 #charRoster {
   position: absolute;
   width: calc(100% / 3);
-  height: 600px;
+  height: 100%;
   left: calc(100% / 3);
-  top: -148px;
+  top: -100px;
   z-index: 101;
   display: none;
-  flex-direction: column;
   align-items: center;
+  text-align: center;
   justify-content: center;
   background-color: #0e313193;
   opacity: 0;
   transform: scale(1.2);
   transition: opacity 200ms, transform 200ms;
+  vertical-align:middle;
 }
 
 .charInRoster {
-  width: 46px;
-  height: 46px;
+  width: 19%;
+  height: auto;
 }
 
 .charInRoster:hover {

@@ -45,15 +45,21 @@ function pushArrayInOrder(array, string1, string2 = "") {
         }
     }
 }
-const pNameInps = [], pTagInps = [], pFinders = [], charLists = [], charDivLists = [], skinDivLists = [], skinLists = [], charImgs = [];
+const pNameInps = [], pTagInps = [], pFinders = [], charLists1 = [], charLists2 = [], charDivLists = [], skinDivLists = [], skinLists = [], charImgs = [], coinImgs = [], coinAmts = [], scores = [], influences1 = [], influences2 = [];
 pushArrayInOrder(pNameInps, "p", "Name");
 pushArrayInOrder(pTagInps, "p", "Tag");
 pushArrayInOrder(pFinders, "pFinder");
-pushArrayInOrder(charLists, "p", "CharSelector");
+pushArrayInOrder(charLists1, "p", "CharSelector1");
+pushArrayInOrder(charLists2, "p", "CharSelector2");
 pushArrayInOrder(charDivLists, "p", "CharSelectorDiv");
 pushArrayInOrder(skinDivLists, "skinSelectorP", "");
 pushArrayInOrder(skinLists, "skinListP", "");
 pushArrayInOrder(charImgs, "p", "CharImg");
+pushArrayInOrder(coinImgs, "p", "CoinImg");
+pushArrayInOrder(coinAmts, "p", "CoinAmt");
+pushArrayInOrder(scores, "p", "ScoreInput");
+pushArrayInOrder(influences1, "p", "InfluenceCheck1");
+pushArrayInOrder(influences2, "p", "InfluenceCheck2");
 
 const p1Win1 = document.getElementById('winP1-1');
 const p1Win2 = document.getElementById('winP1-2');
@@ -75,6 +81,7 @@ const bo5Div = document.getElementById("bo5Div");
 
 const roundInp = document.getElementById('roundName');
 const tournamentInp = document.getElementById('tournamentName');
+const fetchButton = document.getElementById('fetchButton');
 
 const casters = document.getElementsByClassName("caster");
 
@@ -82,8 +89,8 @@ const forceWL = document.getElementById('forceWLToggle');
 
 
 init();
-function init() {
 
+function init() {
     //first, add listeners for the bottom bar buttons
     document.getElementById('updateRegion').addEventListener("click", writeScoreboard);
     document.getElementById('settingsRegion').addEventListener("click", moveViewport);
@@ -91,158 +98,30 @@ function init() {
     //if the viewport is moved, click anywhere on the center to go back
     document.getElementById('goBack').addEventListener("click", goBack);
 
-
     /* SETTINGS */
 
     //set listeners for the settings checkboxes
     document.getElementById("allowIntro").addEventListener("click", saveGUISettings);
-    forceWL.addEventListener("click", forceWLtoggle);
     document.getElementById("alwaysOnTop").addEventListener("click", alwaysOnTop);
-    document.getElementById("copyMatch").addEventListener("click", copyMatch);
-    
+
     // load GUI settings
     const guiSettings = JSON.parse(fs.readFileSync(textPath + "/GUI Settings.json", "utf-8"));
     if (guiSettings.allowIntro) {document.getElementById("allowIntro").checked = true};
-    if (guiSettings.forceWL) {forceWL.click()};
     if (guiSettings.alwaysOnTop) {document.getElementById("alwaysOnTop").click()};
 
 
-    /* Overlay */
-    setSingles();
-
-    //load color slot list and add the color background on each side
-
-    loadColors();
-
     //load the character list for all players on startup
-
     loadCharacters();
-
     createCharRoster();
     document.getElementById('charRoster').addEventListener("click", hideChars);
 
     //set listeners that will trigger when character or skin changes
-    for (let i = 0; i < charLists.length; i++) {
-        charLists[i].addEventListener("change", charChangeL);
-        skinLists[i].addEventListener("change", skinChangeL);
+    for (let i = 0; i < charLists1.length; i++) {
+        charLists1[i].addEventListener("change", charChangeL);
+        charLists2[i].addEventListener("change", charChangeL);
     }
-    //check whenever an image isnt found so we replace it with a "?"
-    for (let i = 0; i < charImgs.length; i++) {
-        charImgs[i].addEventListener("error", () => {
-            charImgs[i].setAttribute('src', charPathRandom + '/P2.png');
-        });
-    }
-    
 
-    //score tick listeners, to automatically check/uncheck the other ticks
-    p1Win1.addEventListener("click", changeScoreTicks1);
-    p2Win1.addEventListener("click", changeScoreTicks1);
-    p1Win2.addEventListener("click", changeScoreTicks2);
-    p2Win2.addEventListener("click", changeScoreTicks2);
-    p1Win3.addEventListener("click", changeScoreTicks3);
-    p2Win3.addEventListener("click", changeScoreTicks3);
-
-    //set click listeners for the [W] and [L] buttons
-    p1W.addEventListener("click", setWLP1);
-    p1L.addEventListener("click", setWLP1);
-    p2W.addEventListener("click", setWLP2);
-    p2L.addEventListener("click", setWLP2);
-
-
-    //for each player input field
-    // TODO: doubles
-    for (let i = 0; i < 2; i++) {
-
-        //prepare the player finder (player presets)
-        preparePF(i+1);
-
-        //check if theres a player preset every time we type or click in the player box
-        pNameInps[i].addEventListener("input", checkPlayerPreset);
-        pNameInps[i].addEventListener("focusin", checkPlayerPreset);
-
-        //resize the container if it overflows
-        pNameInps[i].addEventListener("input", resizeInput);
-        //also do it for tag inputs while we're at it
-        pTagInps[i].addEventListener("input", resizeInput);
-    }
-    
-
-    //set click listeners to change the "best of" status
-    bo3Div.addEventListener("click", changeBestOf);
-    bo5Div.addEventListener("click", changeBestOf);
-    //set initial value
-    bo3Div.style.color = "var(--text2)";
-    bo5Div.style.backgroundImage = "linear-gradient(to top, #0e3131, #0e3131)";
-
-
-    //check if the round is grand finals
-    roundInp.addEventListener("input", checkRound);
-    
-
-    //add a listener to the swap button
-    document.getElementById('swapButton').addEventListener("click", swap);
-    //add a listener to the clear button
-    document.getElementById('clearButton').addEventListener("click", clearPlayers);
-
-
-    /* KEYBOARD SHORTCUTS */
-
-    //enter
-    Mousetrap.bind('enter', () => {
-
-        if (isPresetOpen()) {
-            //if a player presets menu is open, load preset
-            for (let i = 0; i < pFinders.length; i++) {
-                if (pFinders[i].style.display == "block" && currentFocus > -1) {
-                    pFinders[i].getElementsByClassName("finderEntry")[currentFocus].click();
-                }
-            }
-        } else {
-            //update scoreboard info (updates botBar color for visual feedback)
-            writeScoreboard();
-            document.getElementById('botBar').style.backgroundColor = "var(--bg3)";
-        }
-
-    }, 'keydown');
-    //when releasing enter, change bottom bar's color back to normal
-    Mousetrap.bind('enter', () => {
-        document.getElementById('botBar').style.backgroundColor = "var(--bg5)";
-    }, 'keyup');
-
-    //esc to clear player info
-    Mousetrap.bind('esc', () => {
-        if (movedSettings) { //if settings are open, close them
-            goBack();
-        } else if (isPresetOpen()) { //if a player preset is open, close it
-            for (let i = 0; i < pFinders.length; i++) {
-                pFinders[i].style.display = "none";
-            }
-        } else {
-            clearPlayers(); //by default, clear player info
-        }
-    });
-
-    //F1 or F2 to give players a score tick
-    Mousetrap.bind('f1', () => { giveWinP1() });
-    Mousetrap.bind('f2', () => { giveWinP2() });
-
-    //up/down, to navigate the player presets menu (only when a menu is shown)
-    Mousetrap.bind('down', () => {
-        for (let i = 0; i < pFinders.length; i++) {
-            if (pFinders[i].style.display == "block") {
-                currentFocus++;
-                addActive(pFinders[i].getElementsByClassName("finderEntry"));
-            }
-        }
-    });
-    Mousetrap.bind('up', () => {
-        for (let i = 0; i < pFinders.length; i++) {
-            if (pFinders[i].style.display == "block") {
-                currentFocus--;
-                addActive(pFinders[i].getElementsByClassName("finderEntry"));
-            }
-        }
-    });
+    fetchButton.addEventListener("click", fetchGameData);
 }
 
 function isPresetOpen() {
@@ -250,7 +129,7 @@ function isPresetOpen() {
     for (let i = 0; i < pFinders.length; i++) {
         if (pFinders[i].style.display == "block") {
             theBool = true;
-        }   
+        }
     }
     return theBool;
 }
@@ -282,15 +161,19 @@ function getJson(jPath) {
 }
 
 function loadCharacters() {
-    //for each player 
-    console.log(charLists.length);
-    for (let i=0; i < charLists.length; i++) {
-        console.log(i);
-        charLists[i].setAttribute('src', charPath + '/Random/CSS.png');
-        charLists[i].setAttribute('title', 'Random');
-        charLists[i].addEventListener("click", openChars);
-        // TODO: Update to use list of skins
-        charImgChange(charImgs[i], "Random", "Random Blue");
+    //for each player
+    for (let i=0; i < charLists1.length; i++) {
+        charLists1[i].setAttribute('src', charPath + '/PM/DUKE.png');
+        charLists1[i].setAttribute('title', 'DUKE');
+        charLists1[i].addEventListener("click", openChars);
+        charImgChange(charLists1[i], "DUKE");
+
+        charLists2[i].setAttribute('src', charPath + '/PM/DUKE.png');
+        charLists2[i].setAttribute('title', 'DUKE');
+        charLists2[i].addEventListener("click", openChars);
+        charImgChange(charLists2[i], "DUKE");
+
+        coinImgs[i].setAttribute('src', charPath + '/sdcoin.png');
     }
 }
 
@@ -298,7 +181,8 @@ function loadCharacters() {
 //whenever we click on the character change button
 function openChars() {
     let pnum = this.id.substring(this.id.search(/p[0-9]/i) + 1, this.id.search(/p[0-9]/i) + 2);
-    document.getElementById('charRoster').setAttribute('title', pnum);
+    let cnum = this.id.substring(this.id.length-1);
+    document.getElementById('charRoster').setAttribute('title', pnum + cnum);
 
     document.getElementById('charRoster').style.display = "flex"; //show the thing
     setTimeout( () => { //right after, change opacity and scale
@@ -318,13 +202,18 @@ function hideChars() {
 
 //called whenever clicking an image in the character roster
 function changeCharacter() {
-    let pnum = document.getElementById('charRoster').title;
-    charLists[pnum - 1].setAttribute('title', this.id);
-    charLists[pnum - 1].setAttribute('src', charPath + '/' + this.id + '/CSS.png');
+    let pnum = document.getElementById('charRoster').title.substring(0,1);
+    let cnum = document.getElementById('charRoster').title.substring(1,2);
 
-    // TODO: Get list of skins from char info
-    charImgChange(charImgs[pnum - 1], this.id, `${this.id} (1)`);
-    addSkinIcons(pnum);
+    if (cnum == 1) {
+      charLists1[pnum - 1].setAttribute('title', this.id);
+      charLists1[pnum - 1].setAttribute('src', charPath + '/PM/' + this.id + '.png');
+      charImgChange(charLists1[pnum - 1], this.id);
+    } else if (cnum == 2) {
+      charLists2[pnum - 1].setAttribute('title', this.id);
+      charLists2[pnum - 1].setAttribute('src', charPath + '/PM/' + this.id + '.png');
+      charImgChange(charLists2[pnum - 1], this.id);
+    }
 }
 
 //same as above but for the swap button
@@ -366,7 +255,7 @@ function addSkinIcons(pNum) {
 
             document.getElementById('skinListP'+pNum).appendChild(newImg);
         }
-       
+
     }
 
     //if the list only has 1 skin or none, hide the skin list
@@ -387,76 +276,20 @@ function createCharRoster() {
     //checks the character list which we use to order stuff
     const guiSettings = getJson(textPath + "/InterfaceInfo");
     //first row
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < guiSettings.charactersBase.length; i++) {
         let newImg = document.createElement('img');
         newImg.className = "charInRoster";
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
+        newImg.setAttribute('src', charPath + '/PM/' + guiSettings.charactersBase[i] + '.png');
 
         newImg.id = guiSettings.charactersBase[i]; //we will read this value later
         newImg.addEventListener("click", changeCharacter);
 
-        document.getElementById("rosterLine1").appendChild(newImg);
-    }
-    //second row
-    for (let i = 9; i < 17; i++) {
-        let newImg = document.createElement('img');
-        newImg.className = "charInRoster";
-
-        newImg.id = guiSettings.charactersBase[i];
-        newImg.addEventListener("click", changeCharacter);
-
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
-        document.getElementById("rosterLine2").appendChild(newImg);
-    }
-    //third row
-    for (let i = 17; i < 26; i++) {
-        let newImg = document.createElement('img');
-        newImg.className = "charInRoster";
-
-        newImg.id = guiSettings.charactersBase[i];
-        newImg.addEventListener("click", changeCharacter);
-
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
-        document.getElementById("rosterLine3").appendChild(newImg);
-    }
-    //fourth row
-    for (let i = 26; i < 34; i++) {
-        let newImg = document.createElement('img');
-        newImg.className = "charInRoster";
-
-        newImg.id = guiSettings.charactersBase[i];
-        newImg.addEventListener("click", changeCharacter);
-
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
-        document.getElementById("rosterLine4").appendChild(newImg);
-    }
-    //fifth row
-    for (let i = 34; i < 43; i++) {
-        let newImg = document.createElement('img');
-        newImg.className = "charInRoster";
-
-        newImg.id = guiSettings.charactersBase[i];
-        newImg.addEventListener("click", changeCharacter);
-
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
-        document.getElementById("rosterLine5").appendChild(newImg);
-    }
-    //sixth row
-    for (let i = 43; i < 45; i++) {
-        let newImg = document.createElement('img');
-        newImg.className = "charInRoster";
-
-        newImg.id = guiSettings.charactersBase[i];
-        newImg.addEventListener("click", changeCharacter);
-
-        newImg.setAttribute('src', charPath + '/' + guiSettings.charactersBase[i] + '/CSS.png');
-        document.getElementById("rosterLine6").appendChild(newImg);
+        document.getElementById("charRoster").appendChild(newImg);
     }
 }
 
 //called whenever we want to change the character
 function charChange(list) {
-
     const currentChar = list.selectedOptions[0].text; //character that has been selected
 
     //we need to know from what player is this coming from somehow
@@ -468,14 +301,14 @@ function charChange(list) {
 
     //change the character image of the interface (only for first 2 players)
     if (pNum < 3) {
-        //check if skinlist exists first so we dont bug the code later 
+        //check if skinlist exists first so we dont bug the code later
         let currentSkin;
         if (skinList.selectedOptions[0]) {
             currentSkin = skinList.selectedOptions[0].text;
         }
         charImgChange(charImgs[pNum-1], currentChar, currentSkin);
     }
-    
+
     //hide the skin dropdown if the list has 1 or less entries
     if (gamemode == 1 && (pNum == 3 || pNum == 4)) {
         //dont do this for players 3 and 4 if the gamemode is singles
@@ -486,7 +319,7 @@ function charChange(list) {
             skinList.style.display = "inline";
         }
     }
-    
+
 
     //check if the current player name has a custom skin for the character
     checkCustomSkin(pNum);
@@ -533,11 +366,18 @@ function skinChange(list) {
 function skinChangeL() {
     skinChange(this);
 }
-
 //change the image path depending on the character and skin
 function charImgChange(charImg, charName, skinName) {
+  /*
     charImg.setAttribute('title', skinName);
     charImg.setAttribute('src', charPath + '/' + charName + '/Renders/' + skinName + '.png');
+*/
+}
+
+//change the image path depending on the character and skin
+function charImgChange(charImg, cardName) {
+    charImg.setAttribute('title', cardName);
+    charImg.setAttribute('src', charPath + '/PM/' + cardName + '.png');
 }
 
 //will load the skin list of a given character
@@ -594,7 +434,7 @@ function loadColors() {
         //create the color's name
         const newText = document.createElement('div');
         newText.innerHTML = colorList[i].name;
-        
+
         //create the color's rectangle
         const newRect = document.createElement('div');
         newRect.style.width = "13px";
@@ -612,11 +452,11 @@ function loadColors() {
         //copy the div we just created to add it to the right side
         const newDivR = newDiv.cloneNode(true);
         document.getElementById("dropdownColorR").appendChild(newDivR);
-        
+
         //if the divs get clicked, update the colors
         newDiv.addEventListener("click", updateColor);
         newDivR.addEventListener("click", updateColor);
-    
+
     }
 
     //set the initial colors for the interface (the first color for p1, and the second for p2)
@@ -635,7 +475,7 @@ function updateColor() {
 
             const colorRectangle = document.getElementById(side+"ColorRect");
             const colorGrad = document.getElementById(side+"Side");
-            
+
             //change the variable that will be read when clicking the update button
             if (side == "l") {
                 colorL = colorList[i].name;
@@ -696,7 +536,7 @@ function checkScore(tick1, tick2, tick3) {
     return totalScore;
 }
 
-//gives a victory to player 1 
+//gives a victory to player 1
 function giveWinP1() {
     if (p1Win2.checked) {
         p1Win3.checked = true;
@@ -815,7 +655,7 @@ function checkPlayerPreset() {
                     const newDiv = document.createElement('div');
                     newDiv.className = "finderEntry";
                     newDiv.addEventListener("click", playerPreset);
-                    
+
                     //create the texts for the div, starting with the tag
                     const spanTag = document.createElement('span');
                     //if the tag is empty, dont do anything
@@ -874,7 +714,7 @@ async function positionChar(character, skin, charEL) {
 
     //get the character positions
     const charInfo = getJson(charPath + "/" + character + "/_Info");
-	
+
 	//               x, y, scale
 	const charPos = [0, 0, 1];
 	//now, check if the character and skin exist in the database down there
@@ -893,12 +733,12 @@ async function positionChar(character, skin, charEL) {
         charPos[1] = 0;
         charPos[2] = 1.2;
 	}
-    
+
     //to position the character
     charEL.style.left = charPos[0] + "px";
     charEL.style.top = charPos[1] + "px";
     charEL.style.transform = "scale(" + charPos[2] + ")";
-    
+
     //if the image fails to load, we will put a placeholder
 	charEL.addEventListener("error", () => {
         charEL.setAttribute('src', charPathRandom + '/P2.png');
@@ -954,7 +794,7 @@ function checkCustomSkin(pNum) {
 
     //get the player preset list for the current text
     const playerList = getJson(textPath + "/Player Info/" + pNameInps[pNum].value);
-    
+
     if (playerList) { //safety check
 
         playerList.characters.forEach(char => { //for each possible character
@@ -1057,7 +897,7 @@ function setSingles() {
     const rColor = document.getElementById("rColor");
     rColor.style.marginLeft = "0px";
     rColor.style.borderTopLeftRadius = "0px";
-    rColor.style.borderBottomLeftRadius = "0px";        
+    rColor.style.borderBottomLeftRadius = "0px";
 
     //move everything back to normal
     charImgs[2].style.opacity = 0;
@@ -1082,7 +922,7 @@ function setSingles() {
 function setDoubles() {
     //show singles icon
     gmIcon2.style.opacity = 0;
-    gmIcon1.style.left = "11px"; 
+    gmIcon1.style.left = "11px";
 
     //add some margin to the color buttons, change border radius
     const lColor = document.getElementById("lColor");
@@ -1122,7 +962,7 @@ function setDoubles() {
     for (let i = 1; i < 3; i++) {
         document.getElementById("row1-"+i).insertAdjacentElement("afterbegin", wlButtons[i-1]);
         document.getElementById("row1-"+i).insertAdjacentElement("afterbegin", document.getElementById('scoreBox'+i));
-        
+
         document.getElementById("scoreText"+i).style.display = "none";
 
         tNameInps[i-1].style.display = "block";
@@ -1150,7 +990,7 @@ function setDoubles() {
 
         pTagInps[i].style.maxWidth = "45px"
         pNameInps[i].style.maxWidth = "94px"
-        
+
         charLists[i].style.maxWidth = "65px";
         skinLists[i].style.maxWidth = "65px";
     }
@@ -1198,7 +1038,7 @@ function swap() {
         //characters and skins
         const tempP1Char = charLists[i].selectedOptions[0].text;
         const tempP2Char = charLists[i+1].selectedOptions[0].text;
-        
+
         //we need to perform this check since the program would halt when reading from null
         let p1RealSkin, p2RealSkin;
         try {
@@ -1230,7 +1070,7 @@ function swap() {
         //find out if the swapped skin is a custom one
         checkCustomSkin(i+1);
         checkCustomSkin(i+2);
-    }    
+    }
 
     //scores
     const tempP1Score = checkScore(p1Win1, p1Win2, p1Win3);
@@ -1261,7 +1101,7 @@ function clearPlayers() {
 
     //crear the team names
     for (let i = 0; i < tNameInps.length; i++) {
-        tNameInps[i].value = "";        
+        tNameInps[i].value = "";
     }
 
     for (let i = 0; i < maxPlayers; i++) {
@@ -1315,6 +1155,10 @@ function setScore(score, tick1, tick2, tick3) {
             }
         }
     }
+}
+
+function fetchGameData(){
+
 }
 
 
@@ -1372,7 +1216,7 @@ function copyMatch() {
 
 // called whenever the used clicks on a settings checkbox
 function saveGUISettings() {
-    
+
     // read the file
     const guiSettings = JSON.parse(fs.readFileSync(textPath + "/GUI Settings.json", "utf-8"));
 
@@ -1391,50 +1235,27 @@ function saveGUISettings() {
 
 //time to write it down
 function writeScoreboard() {
-
     //this is what's going to be in the json file
     const scoreboardJson = {
-        player: [], //more lines will be added below
-        teamName: [
-            tNameInps[0].value,
-            tNameInps[1].value
-        ],
-        color: [
-            colorL,
-            colorR
-        ],
-        score: [
-            checkScore(p1Win1, p1Win2, p1Win3),
-            checkScore(p2Win1, p2Win2, p2Win3)
-        ],
-        wl: [
-            currentP1WL,
-            currentP2WL,
-        ],
-        bestOf: currentBestOf,
-        gamemode: gamemode,
+        player: [],
         round: roundInp.value,
         tournamentName: tournamentInp.value,
         caster: [],
-        allowIntro: document.getElementById('allowIntro').checked,
-        forceHD: document.getElementById('forceHD').checked
+        allowIntro: document.getElementById('allowIntro').checked
     };
     //add the player's info to the player section of the json
     for (let i = 0; i < maxPlayers; i++) {
-
         //we need to perform this check since the program would halt when reading from null
-        let realSkin;
-        try {
-            realSkin = charImgs[i].title;
-        } catch (error) {
-            realSkin = "";
-        }
+        let card1 = charLists1[i].title;
+        let card2 = charLists2[i].title;
 
         scoreboardJson.player.push({
             name: pNameInps[i].value,
-            tag: pTagInps[i].value,
-            character: charLists[i].title,
-            skin: realSkin,
+            pronouns: pTagInps[i].value,
+            cards: [card1, card2],
+            influences: [influences1[i].checked, influences2[i].checked],
+            coins: coinAmts[i].value,
+            score: scores[i].value,
         })
     }
     //do the same for the casters
@@ -1453,14 +1274,8 @@ function writeScoreboard() {
 
     //simple .txt files
     for (let i = 0; i < maxPlayers; i++) {
-        fs.writeFileSync(textPath + "/Simple Texts/Player "+(i+1)+".txt", pNameInps[i].value);        
+        fs.writeFileSync(textPath + "/Simple Texts/Player "+(i+1)+".txt", pNameInps[i].value);
     }
-
-    fs.writeFileSync(textPath + "/Simple Texts/Team 1.txt", tNameInps[0].value);
-    fs.writeFileSync(textPath + "/Simple Texts/Team 2.txt", tNameInps[1].value);
-
-    fs.writeFileSync(textPath + "/Simple Texts/Score L.txt", checkScore(p1Win1, p1Win2, p1Win3).toString());
-    fs.writeFileSync(textPath + "/Simple Texts/Score R.txt", checkScore(p2Win1, p2Win2, p2Win3).toString());
 
     fs.writeFileSync(textPath + "/Simple Texts/Round.txt", roundInp.value);
     fs.writeFileSync(textPath + "/Simple Texts/Tournament Name.txt", tournamentInp.value);
@@ -1468,7 +1283,7 @@ function writeScoreboard() {
     for (let i = 0; i < casters.length; i++) {
         fs.writeFileSync(textPath + "/Simple Texts/Caster "+(i+1)+" Name.txt", document.getElementById('cName'+(i+1)).value);
         fs.writeFileSync(textPath + "/Simple Texts/Caster "+(i+1)+" Twitter.txt", document.getElementById('cTwitter'+(i+1)).value);
-        fs.writeFileSync(textPath + "/Simple Texts/Caster "+(i+1)+" Twitch.txt", document.getElementById('cTwitch'+(i+1)).value);    
+        fs.writeFileSync(textPath + "/Simple Texts/Caster "+(i+1)+" Twitch.txt", document.getElementById('cTwitch'+(i+1)).value);
     }
 
 }

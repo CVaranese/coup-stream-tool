@@ -13,12 +13,12 @@ function createWindow() {
 
 
         if (process.platform == "win32") { // if on Windows
-            resourcesPath = path.resolve('D:\\Stream Tools\\Project-Plus-Stream-Tool\\Stream Tool\\Resources')
-            //resourcesPath = path.resolve(process.env.PORTABLE_EXECUTABLE_DIR, 'Resources')
+            //resourcesPath = path.resolve('D:\\Stream Tools\\coup-stream-tool\\Stream Tool\\Resources')
+            resourcesPath = path.resolve(process.env.PORTABLE_EXECUTABLE_DIR, 'Resources')
         } else { // if on Linux
             resourcesPath = path.resolve('.', 'Resources')
         }
-        
+
         const guiSettings = JSON.parse(fs.readFileSync(resourcesPath + "/Texts/GUI Settings.json"))
         guiWidth = guiSettings.guiWidth
         guiHeight = guiSettings.guiHeight
@@ -51,7 +51,7 @@ function createWindow() {
 
     })
 
-    
+    win.setResizable(false);
     // we dont like menus
     win.removeMenu()
 

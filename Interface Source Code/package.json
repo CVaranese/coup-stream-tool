@@ -7,7 +7,7 @@
   "author": "Readek",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^17.1.2",
+    "electron": "^17.4.10",
     "electron-builder": "^22.14.13",
     "http-server": "^14.1.0"
   },
